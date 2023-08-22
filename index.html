@@ -106,11 +106,12 @@
     //});
 
     // FanMo mesh
-    BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-1.gltf", scene, function(newMeshes){
-        newMeshes[0].scaling = new BABYLON.Vector3(1, 1, 1);    
+    const fanmo = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-1.gltf", scene, function(newMeshes){
+        newMeshes[0].scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);    
     });
 
-
+    fanmo.position.y = 1;
+            
     return scene;
 };
                 window.initFunction = async function() {
