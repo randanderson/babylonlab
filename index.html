@@ -87,12 +87,12 @@
     //sphere.position.y = 1;
 
     // Our built-in 'ground' shape.
-    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
-    let groundMaterial = new BABYLON.StandardMaterial("Ground Material", scene);
-    ground.material = groundMaterial;
-    //ground.material.diffuseColor = BABYLON.Color3.Red();
-    let groundTexture = new BABYLON.Texture(Assets.textures.checkerboard_basecolor_png.rootUrl, scene);
-    ground.material.diffuseTexture = groundTexture;
+    //var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+    //let groundMaterial = new BABYLON.StandardMaterial("Ground Material", scene);
+    //ground.material = groundMaterial;
+    ////ground.material.diffuseColor = BABYLON.Color3.Red();
+    //let groundTexture = new BABYLON.Texture(Assets.textures.checkerboard_basecolor_png.rootUrl, scene);
+    //ground.material.diffuseTexture = groundTexture;
 
 
     // Test baked in mesh
@@ -106,12 +106,10 @@
     //});
 
     // FanMo mesh
-    const fanmo = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-1.gltf", scene, function(newMeshes){
+    BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-1.gltf", scene, function(newMeshes){
         newMeshes[0].scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);    
     });
 
-    fanmo.position.y = 1;
-            
     return scene;
 };
                 window.initFunction = async function() {
