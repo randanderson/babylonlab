@@ -69,8 +69,9 @@
     // This creates and positions a free camera (non-mesh)
     // var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
     // var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
-    var camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
-    
+    // var camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, 1.0, 210, BABYLON.Vector3.Zero(), scene);
+
     // This targets the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
 
@@ -113,6 +114,17 @@
         newMeshes[0].scaling = new BABYLON.Vector3(0.6, 0.6, 0.6);    
     });
     // console.log(fanmoStructure);
+
+    // Add image
+    var materialPlane = new BABYLON.StandardMaterial("texturePlane", scene);
+    materialPlane.diffuseTexture = new BABYLON.Texture("fanmo_midjourney_homerun_1_small.png", scene);
+    materialPlane.specularColor = new BABYLON.Color3(0, 0, 0);
+    materialPlane.backFaceCulling = false;//Allways show the front and the back of an element
+
+    //Creation of a plane to attach image to
+    var plane = BABYLON.Mesh.CreatePlane("plane", 120, scene);
+    plane.rotation.x = Math.PI / 2;
+    plane.material = materialPlane;
 
     // Add Moment-video
 	var planeOpts = {
