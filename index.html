@@ -44,6 +44,8 @@
         </style>
     </head>
 <body>
+    <script src="js/main.js" type="module"></script>
+    
     <div id="canvasZone"><canvas id="renderCanvas"></canvas></div>
     <script>
         var canvas = document.getElementById("renderCanvas");
@@ -66,7 +68,8 @@
 
     // This creates and positions a free camera (non-mesh)
     // var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-    var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
+    // var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
     
     // This targets the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
@@ -106,26 +109,43 @@
     //});
 
     // FanMo mesh
-    BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-3d.glb", scene, function(newMeshes){
+    fanmoStructure = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-3d.glb", scene, function(newMeshes){
         newMeshes[0].scaling = new BABYLON.Vector3(0.6, 0.6, 0.6);    
     });
+    console.log(fanmoStructure);
 
     // Add Moment-video
 	var planeOpts = {
-			height: 5.4762, 
-			width: 7.3967, 
+			height: 2, 
+			width: 3.2, 
 			sideOrientation: BABYLON.Mesh.DOUBLESIDE
 	};
 	var ANote0Video = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
 	var vidPos = (new BABYLON.Vector3(0, 0, -1))
     ANote0Video.position = vidPos;
 	var ANote0VideoMat = new BABYLON.StandardMaterial("m", scene);
-	var ANote0VideoVidTex = new BABYLON.VideoTexture("vidtex","BOSatNYY20230820-jturner-8th.mp4", scene);
+	var ANote0VideoVidTex = new BABYLON.VideoTexture(
+        "vidtex",
+        "BOSatNYY20230820-jturner-8th.mp4",
+        scene,
+        false,
+        false,
+        BABYLON.VideoTexture.TRILINEAR_SAMPLINGMODE,
+        {
+            autoPlay:false,
+            autoUpdateTexture:true
+        }
+    );
 	ANote0VideoMat.diffuseTexture = ANote0VideoVidTex;
 	ANote0VideoMat.roughness = 1;
 	ANote0VideoMat.emissiveColor = new BABYLON.Color3.White();
 	ANote0Video.material = ANote0VideoMat;
-	scene.onPointerObservable.add(function(evt){
+  
+    // scene.onPointerDown = function () {
+    //     videoTexture.video.play();
+    //     scene.onPointerDown = null;
+    // };
+    scene.onPointerObservable.add(function(evt){
 			if(evt.pickInfo.pickedMesh === ANote0Video){
                 //console.log("picked");
 					if(ANote0VideoVidTex.video.paused)
