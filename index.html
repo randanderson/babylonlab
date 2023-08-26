@@ -109,10 +109,10 @@
     //});
 
     // FanMo mesh
-    fanmoStructure = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-3d.glb", scene, function(newMeshes){
+    fanmoStructure = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
         newMeshes[0].scaling = new BABYLON.Vector3(0.6, 0.6, 0.6);    
     });
-    console.log(fanmoStructure);
+    // console.log(fanmoStructure);
 
     // Add Moment-video
 	var planeOpts = {
@@ -121,7 +121,7 @@
 			sideOrientation: BABYLON.Mesh.DOUBLESIDE
 	};
 	var ANote0Video = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
-	var vidPos = (new BABYLON.Vector3(0, 0, -1))
+	var vidPos = (new BABYLON.Vector3(0, 0, 0))
     ANote0Video.position = vidPos;
 	var ANote0VideoMat = new BABYLON.StandardMaterial("m", scene);
 	var ANote0VideoVidTex = new BABYLON.VideoTexture(
