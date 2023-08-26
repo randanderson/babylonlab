@@ -8,9 +8,9 @@
         <!-- Babylon.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
         <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
-        <script src="https://cdn.babylonjs.com/ammo.js"></script>
-        <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script>
-        <script src="https://cdn.babylonjs.com/cannon.js"></script>
+        <!-- <script src="https://cdn.babylonjs.com/ammo.js"></script> -->
+        <!-- <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script> -->
+        <!-- <script src="https://cdn.babylonjs.com/cannon.js"></script> -->
         <script src="https://cdn.babylonjs.com/Oimo.js"></script>
         <script src="https://cdn.babylonjs.com/earcut.min.js"></script>
         <script src="https://cdn.babylonjs.com/babylon.js"></script>
@@ -109,6 +109,33 @@
     BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-3d.glb", scene, function(newMeshes){
         newMeshes[0].scaling = new BABYLON.Vector3(0.6, 0.6, 0.6);    
     });
+
+    // Add Moment-video
+	var planeOpts = {
+			height: 5.4762, 
+			width: 7.3967, 
+			sideOrientation: BABYLON.Mesh.DOUBLESIDE
+	};
+	var ANote0Video = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
+	var vidPos = (new BABYLON.Vector3(0, 0, -1))
+    ANote0Video.position = vidPos;
+	var ANote0VideoMat = new BABYLON.StandardMaterial("m", scene);
+	var ANote0VideoVidTex = new BABYLON.VideoTexture("vidtex","BOSatNYY20230820-jturner-8th.mp4", scene);
+	ANote0VideoMat.diffuseTexture = ANote0VideoVidTex;
+	ANote0VideoMat.roughness = 1;
+	ANote0VideoMat.emissiveColor = new BABYLON.Color3.White();
+	ANote0Video.material = ANote0VideoMat;
+	scene.onPointerObservable.add(function(evt){
+			if(evt.pickInfo.pickedMesh === ANote0Video){
+                //console.log("picked");
+					if(ANote0VideoVidTex.video.paused)
+						ANote0VideoVidTex.video.play();
+					else
+						ANote0VideoVidTex.video.pause();
+                    console.log(ANote0VideoVidTex.video.paused?"paused":"playing");
+			}
+	}, BABYLON.PointerEventTypes.POINTERPICK);
+
 
     return scene;
 };
