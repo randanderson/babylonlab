@@ -126,10 +126,13 @@
     imagetexture.specularColor = new BABYLON.Color3(0, 0, 0);
     imagetexture.backFaceCulling = false;
 
+    const imageWidth = 3.5;
+    const imageHeight = imageWidth * 1.618; // Golden ratio
+
     var plane = BABYLON.MeshBuilder.CreatePlane("plane", {
-            width:4, height:8}, scene);
+            width:imageWidth, height:imageHeight}, scene);
     plane.rotation.x = Math.PI;
-    // plane.rotation.y = Math.PI / 2;
+    plane.rotation.y = Math.PI;
     plane.rotation.z = Math.PI;
     plane.position.z = 0.99
     plane.material = imagetexture;
@@ -143,7 +146,7 @@
 			sideOrientation: BABYLON.Mesh.DOUBLESIDE
 	};
 	var ANote0Video = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
-	var vidPos = (new BABYLON.Vector3(0, 0, 1.5))
+	var vidPos = (new BABYLON.Vector3(0, 0, 2))
     ANote0Video.position = vidPos;
 	var ANote0VideoMat = new BABYLON.StandardMaterial("m", scene);
 	var ANote0VideoVidTex = new BABYLON.VideoTexture(
