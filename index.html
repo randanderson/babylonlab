@@ -69,7 +69,7 @@
     // This creates and positions a free camera (non-mesh)
     // var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
     // var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
-    var camera = new BABYLON.ArcRotateCamera("camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.ArcRotateCamera("camera", Math.PI/2, Math.PI/2, 20, BABYLON.Vector3.Zero(), scene);
     // var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, 1.0, 210, BABYLON.Vector3.Zero(), scene);
 
     // This targets the camera to scene origin
@@ -124,14 +124,14 @@
     var imagetexture = new BABYLON.StandardMaterial("texturePlane", scene);
     imagetexture.diffuseTexture = new BABYLON.Texture("justinturner-pose.png", scene);
     imagetexture.specularColor = new BABYLON.Color3(0, 0, 0);
-    imagetexture.backFaceCulling = true;
+    imagetexture.backFaceCulling = false;
 
     var plane = BABYLON.MeshBuilder.CreatePlane("plane", {
             width:4, height:8}, scene);
-    plane.rotation.x = -Math.PI;
+    plane.rotation.x = Math.PI;
     // plane.rotation.y = Math.PI / 2;
-    // plane.rotation.z = Math.PI / 2;
-    plane.position.z = -0.01
+    plane.rotation.z = Math.PI;
+    plane.position.z = 0.99
     plane.material = imagetexture;
 
     // ----------------------------------------
@@ -143,7 +143,7 @@
 			sideOrientation: BABYLON.Mesh.DOUBLESIDE
 	};
 	var ANote0Video = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
-	var vidPos = (new BABYLON.Vector3(1.5, 0, 0))
+	var vidPos = (new BABYLON.Vector3(0, 0, 1.5))
     ANote0Video.position = vidPos;
 	var ANote0VideoMat = new BABYLON.StandardMaterial("m", scene);
 	var ANote0VideoVidTex = new BABYLON.VideoTexture(
