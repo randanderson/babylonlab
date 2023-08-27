@@ -121,9 +121,12 @@
     // materialPlane.specularColor = new BABYLON.Color3(0, 0, 0);
     materialPlane.backFaceCulling = false;//Allways show the front and the back of an element
 
-    //Creation of a plane to attach image to
-    var plane = BABYLON.MeshBuilder.CreatePlane("plane", 10, scene);
-    plane.rotation.x = Math.PI / 2;
+    var plane = BABYLON.MeshBuilder.CreatePlane("plane", {
+            width:20, height:40}, scene);
+    plane.rotation.x = Math.PI;
+    // plane.rotation.y = Math.PI / 2;
+    // plane.rotation.z = Math.PI / 2;
+    plane.position.z = 2.01
     plane.material = materialPlane;
 
     // Add Moment-video
