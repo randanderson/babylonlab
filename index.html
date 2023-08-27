@@ -110,12 +110,12 @@
     //});
 
     // FanMo mesh
-    fanmoCore = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
+    BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
         newMeshes[0].scaling = new BABYLON.Vector3(0.6, 0.6, 0.6);    
     });
-    console.log(fanmoCore);
+    // console.log(fanmoCore);
 
-    fanmoCore.position.z = 0;
+    // fanmoCore.position.z = 0;
 
     // Add image
     var imagetexture = new BABYLON.StandardMaterial("texturePlane", scene);
