@@ -109,15 +109,18 @@
     //    newMeshes[0].scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);    
     //});
 
+    // ----------------------------------------
     // FanMo mesh
+    // ----------------------------------------
     BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
-        newMeshes[0].scaling = new BABYLON.Vector3(0.6, 0.6, 0.6);    
+        newMeshes[0].scaling = new BABYLON.Vector3(1, 1, 1);    
     });
     // console.log(fanmoCore);
-
     // fanmoCore.position.z = 0;
 
-    // Add image
+    // ----------------------------------------
+    // Add protagonist image
+    // ----------------------------------------
     var imagetexture = new BABYLON.StandardMaterial("texturePlane", scene);
     imagetexture.diffuseTexture = new BABYLON.Texture("justinturner-pose.png", scene);
     imagetexture.specularColor = new BABYLON.Color3(0, 0, 0);
@@ -125,20 +128,22 @@
 
     var plane = BABYLON.MeshBuilder.CreatePlane("plane", {
             width:4, height:8}, scene);
-    plane.rotation.x = Math.PI;
+    plane.rotation.x = -Math.PI;
     // plane.rotation.y = Math.PI / 2;
     // plane.rotation.z = Math.PI / 2;
-    plane.position.z = -2.01
+    plane.position.z = -0.01
     plane.material = imagetexture;
 
+    // ----------------------------------------
     // Add Moment-video
+    // ----------------------------------------
 	var planeOpts = {
 			height: 2, 
 			width: 3.2, 
 			sideOrientation: BABYLON.Mesh.DOUBLESIDE
 	};
 	var ANote0Video = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
-	var vidPos = (new BABYLON.Vector3(0, 0, 0))
+	var vidPos = (new BABYLON.Vector3(1.5, 0, 0))
     ANote0Video.position = vidPos;
 	var ANote0VideoMat = new BABYLON.StandardMaterial("m", scene);
 	var ANote0VideoVidTex = new BABYLON.VideoTexture(
@@ -178,8 +183,6 @@
 };
                 window.initFunction = async function() {
                     
-                    
-                    
                     var asyncEngineCreation = async function() {
                         try {
                         return createDefaultEngine();
@@ -199,6 +202,20 @@
         // Resize
         window.addEventListener("resize", function () {
             engine.resize();
+        });
+
+        // Show Inspector
+        window.addEventListener("keydown", function (ev) {
+            // Shift+Ctrl+Alt+I
+            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
+                if (sceneToRender) {
+                    if (sceneToRender.debugLayer.isVisible()) {
+                        sceneToRender.debugLayer.hide();
+                    } else {
+                        sceneToRender.debugLayer.show();
+                    }
+                }
+            }
         });
     </script>
 </body>
