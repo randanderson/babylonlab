@@ -4,6 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
         <title>FanMoment Viewer</title>
+        <link rel="icon" href="assets/fanmoment.ico" type="image/x-icon" />
 
         <!-- Babylon.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
@@ -97,7 +98,9 @@
     // ----------------------------------------
     // FanMo mesh
     // ----------------------------------------
-    fanmoCore = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
+    var fanmoCore;
+    BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
+        fanmoCore = newMeshes[0];
         newMeshes[0].scaling = new BABYLON.Vector3(1, 1, 1);
         // newMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
     });
@@ -133,15 +136,15 @@
 	var planeOpts = {
 			height: videoHeight, 
 			width: videoWidth,
-			sideOrientation: BABYLON.Mesh.DOUBLESIDE //BABYLON.Mesh.BACKSIDE
+			sideOrientation: BABYLON.Mesh.FRONTSIDE //BABYLON.Mesh.BACKSIDE
 	};
-	var ANote0Video = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
+	var MomentVideo = BABYLON.MeshBuilder.CreatePlane("plane", planeOpts, scene);
 	var vidPos = (new BABYLON.Vector3(0, 1, 1.6))
-    ANote0Video.position = vidPos;
-    ANote0Video.rotation.y = Math.PI;
+    MomentVideo.position = vidPos;
+    MomentVideo.rotation.y = Math.PI;
 
-	var ANote0VideoMat = new BABYLON.StandardMaterial("m", scene);
-	var ANote0VideoVidTex = new BABYLON.VideoTexture(
+	var MomentVideoMat = new BABYLON.StandardMaterial("m", scene);
+	var MomentVideoVidTex = new BABYLON.VideoTexture(
         "vidtex",
         "BOSatNYY20230820-jturner-8th.mp4",
         scene,
@@ -155,23 +158,23 @@
             poster:""
         }
     );
-	ANote0VideoMat.diffuseTexture = ANote0VideoVidTex;
-	ANote0VideoMat.roughness = 1;
-	ANote0VideoMat.emissiveColor = new BABYLON.Color3.White();
-	ANote0Video.material = ANote0VideoMat;
+	MomentVideoMat.diffuseTexture = MomentVideoVidTex;
+	MomentVideoMat.roughness = 1;
+	MomentVideoMat.emissiveColor = new BABYLON.Color3.White();
+	MomentVideo.material = MomentVideoMat;
   
     // scene.onPointerDown = function () {
     //     videoTexture.video.play();
     //     scene.onPointerDown = null;
     // };
     scene.onPointerObservable.add(function(evt){
-        if(evt.pickInfo.pickedMesh === ANote0Video){
+        if(evt.pickInfo.pickedMesh === MomentVideo){
             //console.log("picked");
-            if(ANote0VideoVidTex.video.paused)
-                ANote0VideoVidTex.video.play();
+            if(MomentVideoVidTex.video.paused)
+                MomentVideoVidTex.video.play();
             else
-                ANote0VideoVidTex.video.pause();
-            console.log(ANote0VideoVidTex.video.paused?"paused":"playing");
+                MomentVideoVidTex.video.pause();
+            console.log(MomentVideoVidTex.video.paused?"paused":"playing");
         }
 	}, BABYLON.PointerEventTypes.POINTERPICK);
 
