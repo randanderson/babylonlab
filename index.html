@@ -118,12 +118,12 @@
     // Add image
     var materialPlane = new BABYLON.StandardMaterial("texturePlane", scene);
     materialPlane.diffuseTexture = new BABYLON.Texture("./fanmo_midjourney_homerun_1_small.png", scene);
-    materialPlane.specularColor = new BABYLON.Color3(0, 0, 0);
+    // materialPlane.specularColor = new BABYLON.Color3(0, 0, 0);
     materialPlane.backFaceCulling = false;//Allways show the front and the back of an element
 
     //Creation of a plane to attach image to
-    var plane = BABYLON.MeshBuilder.CreatePlane("plane", 120, scene);
-    // plane.rotation.x = Math.PI / 2;
+    var plane = BABYLON.MeshBuilder.CreatePlane("plane", 10, scene);
+    plane.rotation.x = Math.PI / 2;
     plane.material = materialPlane;
 
     // Add Moment-video
