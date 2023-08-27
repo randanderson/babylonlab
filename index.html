@@ -110,24 +110,26 @@
     //});
 
     // FanMo mesh
-    fanmoStructure = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
+    fanmoCore = BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
         newMeshes[0].scaling = new BABYLON.Vector3(0.6, 0.6, 0.6);    
     });
-    // console.log(fanmoStructure);
+    console.log(fanmoCore);
+
+    fanmoCore.position.z = 0;
 
     // Add image
-    var materialPlane = new BABYLON.StandardMaterial("texturePlane", scene);
-    materialPlane.diffuseTexture = new BABYLON.Texture("./fanmo_midjourney_homerun_1_small.png", scene);
-    // materialPlane.specularColor = new BABYLON.Color3(0, 0, 0);
-    materialPlane.backFaceCulling = false;//Allways show the front and the back of an element
+    var imagetexture = new BABYLON.StandardMaterial("texturePlane", scene);
+    imagetexture.diffuseTexture = new BABYLON.Texture("justinturner-pose.png", scene);
+    imagetexture.specularColor = new BABYLON.Color3(0, 0, 0);
+    imagetexture.backFaceCulling = true;
 
     var plane = BABYLON.MeshBuilder.CreatePlane("plane", {
-            width:20, height:40}, scene);
+            width:4, height:8}, scene);
     plane.rotation.x = Math.PI;
     // plane.rotation.y = Math.PI / 2;
     // plane.rotation.z = Math.PI / 2;
-    plane.position.z = 2.01
-    plane.material = materialPlane;
+    plane.position.z = -2.01
+    plane.material = imagetexture;
 
     // Add Moment-video
 	var planeOpts = {
