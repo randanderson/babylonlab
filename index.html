@@ -70,8 +70,16 @@
     // This creates and positions a free camera (non-mesh)
     // var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
     // var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
-    var camera = new BABYLON.ArcRotateCamera("camera", -Math.PI/2, -Math.PI, 20, BABYLON.Vector3.Zero(), scene);
     // var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, 1.0, 210, BABYLON.Vector3.Zero(), scene);
+
+    // var camera = new BABYLON.ArcRotateCamera("camera", 
+    //                                          -Math.PI/2, -Math.PI, 20, BABYLON.Vector3.Zero(), scene);
+    var camera = new BABYLON.ArcRotateCamera("camera", 
+                                            BABYLON.Tools.ToRadians(-80), 
+                                            BABYLON.Tools.ToRadians(140), 
+                                            20, 
+                                            BABYLON.Vector3.Zero(), 
+                                            scene);
 
     // This targets the camera to scene origin
     camera.setTarget(BABYLON.Vector3.Zero());
@@ -122,11 +130,12 @@
     // Add protagonist image
     // ----------------------------------------
     var imagetexture = new BABYLON.StandardMaterial("texturePlane", scene);
-    imagetexture.diffuseTexture = new BABYLON.Texture("justinturner-pose.png", scene);
+    // imagetexture.diffuseTexture = new BABYLON.Texture("justinturner-pose.png", scene);
+    imagetexture.diffuseTexture = new BABYLON.Texture("jayson-tatum-dunk-watercolor-rounded.png", scene);
     imagetexture.specularColor = new BABYLON.Color3(0, 0, 0);
     imagetexture.backFaceCulling = false;
 
-    const imageWidth = 3.5;
+    const imageWidth = 4.7;
     const imageHeight = imageWidth * 1.618; // Golden ratio
 
     var plane = BABYLON.MeshBuilder.CreatePlane("plane", {
