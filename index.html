@@ -88,11 +88,13 @@
     camera.attachControl(canvas, true);
 
     // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-    var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(60, 60, 80), scene);
+    var lightHemi = new BABYLON.HemisphericLight("lightHemi", new BABYLON.Vector3(0, 1, 0), scene);
+    var lightAbove = new BABYLON.PointLight("lightAbove", new BABYLON.Vector3(60, 60, 80), scene);
+    var lightFacing = new BABYLON.PointLight("lightFacing", new BABYLON.Vector3(0, 0, 80), scene);
 
     // Default intensity is 1. Let's dim the light a small amount
-    light.intensity = 0.8;
+    lightAbove.intensity = 0.8;
+    lightFacing.intensity = 0.5;
 
     // Our built-in 'ground' shape.
     //var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
@@ -116,16 +118,12 @@
     // ----------------------------------------
     // FanMo mesh
     // ----------------------------------------
-    var fanmoCore;
     BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
         fanmoCore = newMeshes[0];
         newMeshes[0].scaling = new BABYLON.Vector3(1, 1, 1);
         // newMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
     });
-    console.log(fanmoCore);
-    // console.log(fanmoCore.scaling);
-    // fanmoCore.position.z = 0;
-
+    
     // ----------------------------------------
     // Add protagonist image
     // ----------------------------------------
@@ -186,9 +184,11 @@
     //     videoTexture.video.play();
     //     scene.onPointerDown = null;
     // };
+
+
     scene.onPointerObservable.add(function(evt){
+        console.log(evt.pickInfo.pickedMesh.name);
         if(evt.pickInfo.pickedMesh === MomentVideo){
-            //console.log("picked");
             if(MomentVideoVidTex.video.paused)
                 MomentVideoVidTex.video.play();
             else
@@ -197,6 +197,30 @@
         }
 	}, BABYLON.PointerEventTypes.POINTERPICK);
 
+
+    // ----------------------------------------
+    // Add basic GUI
+    // ----------------------------------------
+    // var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    // var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Play");
+    // button1.width = "150px"
+    // button1.height = "40px";
+    // button1.color = "white";
+    // button1.background = "green";
+    // button1.position = new BABYLON.Vector2(300, -300);
+
+    let advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, scene);
+    let loadedGUI = advancedTexture2.parseFromSnippetAsync("TVKBQ2#2").then(function (result) {
+        let button = advancedTexture2.getControlByName("Button_join");
+        button.onPointerUpObservable.add(function() {
+            console.log("Button_join pressed");
+            if(MomentVideoVidTex.video.paused)
+                MomentVideoVidTex.video.play();
+            else
+                MomentVideoVidTex.video.pause();
+            console.log(MomentVideoVidTex.video.paused?"paused":"playing");
+        });
+    });
 
     return scene;
 };
