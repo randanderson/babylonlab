@@ -68,12 +68,6 @@
     var scene = new BABYLON.Scene(engine);
 
     // This creates and positions a free camera (non-mesh)
-    // var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-    // var camera = new BABYLON.ArcRotateCamera("camera", BABYLON.Tools.ToRadians(90), BABYLON.Tools.ToRadians(65), 10, BABYLON.Vector3.Zero(), scene);
-    // var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, 1.0, 210, BABYLON.Vector3.Zero(), scene);
-
-    // var camera = new BABYLON.ArcRotateCamera("camera", 
-    //                                          -Math.PI/2, -Math.PI, 20, BABYLON.Vector3.Zero(), scene);
     var camera = new BABYLON.ArcRotateCamera("camera", 
                                             BABYLON.Tools.ToRadians(-80), 
                                             BABYLON.Tools.ToRadians(140), 
@@ -116,12 +110,67 @@
 		
 
     // ----------------------------------------
-    // FanMo mesh
+    // Create the FanMoment
     // ----------------------------------------
     BABYLON.SceneLoader.ImportMesh("", "./", "fanmo-core.glb", scene, function(newMeshes){
         fanmoCore = newMeshes[0];
         newMeshes[0].scaling = new BABYLON.Vector3(1, 1, 1);
         // newMeshes[0].position = new BABYLON.Vector3(0, 0, 0);
+
+        // Add FanMoment title to top of fanmocore as extruded text
+        var fontData = fetch("https://assets.babylonjs.com/fonts/Droid Sans_Regular.json").then(function(response) { return response.json(); }).then(function(json) {
+            var myText = BABYLON.MeshBuilder.CreateText("myText", "Tatum 35 Points", json, {
+                size: 0.4,
+                resolution: 64, 
+                depth: 0.2
+            });
+            myText.position = new BABYLON.Vector3(0, -4.2, -1.1);
+            myText.rotation = new BABYLON.Vector3(0, Math.PI, 0);
+            myText.parent = fanmoCore;
+        });
+
+        // ----------------------------------------
+        // Add FanMoment details to bottom of fanmocore as dynamic texture
+        // ----------------------------------------
+        // var dynamicTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+        // var dynamicTextureContext = dynamicTexture.getContext();
+        // dynamicTextureContext.font = "bold 24px monospace";
+        // dynamicTextureContext.fillStyle = "white";
+        // dynamicTextureContext.fillText("Boston Celtics at New York Knicks", 0, 24);
+        // dynamicTextureContext.fillText("August 20, 2023", 0, 48);
+        // dynamicTextureContext.fillText("TD Garden, Boston, MA", 0, 72);
+
+        var groundWidth = 20;
+        var groundHeight = 10;
+
+        var ground = BABYLON.MeshBuilder.CreateGround("ground1", {width: groundWidth, height: groundHeight, subdivisions: 25}, scene);
+
+        //Create dynamic texture
+        var textureResolution = 512;
+        var textureGround = new BABYLON.DynamicTexture("dynamic texture", textureResolution, scene);   
+        var textureContext = textureGround.getContext();
+        
+        var materialGround = new BABYLON.StandardMaterial("Mat", scene);    				
+        materialGround.diffuseTexture = textureGround;
+        ground.material = materialGround;
+
+        //Draw text
+        var font = "bold 24px monospace";
+        var text = "Boston Celtics at New York Knicks";
+        var textWidth = textureContext.measureText(text).width;
+        var x = (textureResolution - textWidth) / 2;
+        var y = 24;
+        textureContext.font = font;
+        textureContext.fillStyle = "white";
+        textureContext.fillText(text, x, y);
+
+        // position ground at the base of the back of fanmoCore
+        ground.position = new BABYLON.Vector3(0, -4.2, -3.1);
+        ground.rotation = new BABYLON.Vector3(Math.PI, 0, 0);
+        ground.parent = fanmoCore;
+        
+
+
     });
     
     // ----------------------------------------
@@ -179,16 +228,14 @@
 	MomentVideoMat.roughness = 1;
 	MomentVideoMat.emissiveColor = new BABYLON.Color3.White();
 	MomentVideo.material = MomentVideoMat;
-  
-    // scene.onPointerDown = function () {
-    //     videoTexture.video.play();
-    //     scene.onPointerDown = null;
-    // };
 
+    // ----------------------------------------
+    // Add Moment-video
 
     scene.onPointerObservable.add(function(evt){
         console.log(evt.pickInfo.pickedMesh.name);
-        if(evt.pickInfo.pickedMesh === MomentVideo){
+        // if(evt.pickInfo.pickedMesh === MomentVideo){
+        if(evt.pickInfo.pickedMesh.name === "geometry.002"){
             if(MomentVideoVidTex.video.paused)
                 MomentVideoVidTex.video.play();
             else
@@ -196,6 +243,25 @@
             console.log(MomentVideoVidTex.video.paused?"paused":"playing");
         }
 	}, BABYLON.PointerEventTypes.POINTERPICK);
+
+    // ----------------------------------------
+    // Add FanMoment title to top of fanmocore as extruded text
+    // ----------------------------------------
+    // var myText = BABYLON.MeshBuilder.CreateText("myText", "Hello World !! @ #$ % é", fontData, {
+    //     size: 16,
+    //     resolution: 64, 
+    //     depth: 10
+    // });
+    // myText.position = new BABYLON.Vector3(0, 0, 0);
+    // myText.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
+    // myText.parent = fanmoCore;
+    // let fontData = "https://cdn.babylonjs.com/fonts/arial.ttf";
+
+    // let fontData = "https://assets.babylonjs.com/fonts/Droid Sans_Regular.json";
+    // let text = BABYLON.MeshBuilder.CreateText("text", {text: "Hello, world!", font: fontData, size: 1, depth: 0.5});
+    // text.position = new BABYLON.Vector3(0, 0, 0);
+    // text.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
+    // // text.parent = fanmoCore;
 
 
     // ----------------------------------------
@@ -212,14 +278,35 @@
     let advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, scene);
     let loadedGUI = advancedTexture2.parseFromSnippetAsync("TVKBQ2#2").then(function (result) {
         let button = advancedTexture2.getControlByName("Button_join");
+
+        // get the height and width of the canvas
+        let canvasHeight = advancedTexture2._canvas.height;
+        let canvasWidth = advancedTexture2._canvas.width;
+
+        // move the button to the top left corner
+        button.left = -canvasWidth/2 + button.width/2 + 50;
+        button.top = -canvasHeight/2 + button.height/2 + 50;
+
+        // change text on the button
+        button.children[0].text = "View my Fan Avatar";
+
+
+        // when button is pressed, open a new browser window
         button.onPointerUpObservable.add(function() {
             console.log("Button_join pressed");
-            if(MomentVideoVidTex.video.paused)
-                MomentVideoVidTex.video.play();
-            else
-                MomentVideoVidTex.video.pause();
-            console.log(MomentVideoVidTex.video.paused?"paused":"playing");
+            window.open("avatarviewer.html", "_blank");
         });
+
+
+        // play/pause the video
+        // button.onPointerUpObservable.add(function() {
+        //     console.log("Button_join pressed");
+        //     if(MomentVideoVidTex.video.paused)
+        //         MomentVideoVidTex.video.play();
+        //     else
+        //         MomentVideoVidTex.video.pause();
+        //     console.log(MomentVideoVidTex.video.paused?"paused":"playing");
+        // });
     });
 
     return scene;
